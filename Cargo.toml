@@ -1,0 +1,71 @@
+[package]
+name = "aoc-2021"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+[[bin]]
+name = "a01"
+
+[[bin]]
+name = "a02"
+
+[[bin]]
+name = "a03"
+
+[[bin]]
+name = "a04"
+
+[[bin]]
+name = "a05"
+
+[[bin]]
+name = "a06"
+
+[[bin]]
+name = "a07"
+
+[[bin]]
+name = "a10"
+
+[[bin]]
+name = "a11"
+
+[[bin]]
+name = "a12"
+
+[[bin]]
+name = "a13"
+
+[[bin]]
+name = "a14"
+
+[[bin]]
+name = "a15"
+
+[[bin]]
+name = "a16"
+
+[[bin]]
+name = "a17"
+
+[[bin]]
+name = "a20"
+
+[[bin]]
+name = "a21"
+
+[[bin]]
+name = "a22"
+
+[[bin]]
+name = "a23"
+
+[[bin]]
+name = "a24"
+
+[[bin]]
+name = "a25"
