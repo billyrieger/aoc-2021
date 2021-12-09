@@ -12,7 +12,11 @@ impl Point {
     }
 }
 
-fn main() {
+fn min_max(a: i32, b: i32) -> (i32, i32) {
+    (a.min(b), a.max(b))
+}
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let parse_line = |line: &str| -> Option<(Point, Point)> {
         let (a, b) = line.split_once(" -> ")?;
         let (x0, y0) = a.split_once(',')?;
@@ -21,13 +25,13 @@ fn main() {
         let p1 = Point::new(x1.parse().ok()?, y1.parse().ok()?);
         Some((p0, p1))
     };
-    let file = std::fs::read_to_string("input/05.txt").unwrap();
+    let file = std::fs::read_to_string("input/05.txt")?;
     let endpoints: Vec<(Point, Point)> = file.lines().filter_map(parse_line).collect();
     let mut covered = HashMap::<Point, u32>::new();
 
     for &(p0, p1) in &endpoints {
-        let (x_min, x_max) = (p0.x.min(p1.x), p0.x.max(p1.x));
-        let (y_min, y_max) = (p0.y.min(p1.y), p0.y.max(p1.y));
+        let (x_min, x_max) = min_max(p0.x, p1.x);
+        let (y_min, y_max) = min_max(p0.y, p1.y);
         if p0.x == p1.x {
             for y in y_min..=y_max {
                 *covered.entry(Point::new(p0.x, y)).or_insert(0) += 1
@@ -41,17 +45,20 @@ fn main() {
     println!("1: {}", covered.values().filter(|&&n| n >= 2).count());
 
     for &(p0, p1) in &endpoints {
-        let (x_min, x_max) = (p0.x.min(p1.x), p0.x.max(p1.x));
-        let (y_min, y_max) = (p0.y.min(p1.y), p0.y.max(p1.y));
-        if p0.x - p1.x == p0.y - p1.y {
+        let (x_min, x_max) = min_max(p0.x, p1.x);
+        let (y_min, y_max) = min_max(p0.y, p1.y);
+        let (delta_x, delta_y) = (p0.x - p1.x, p0.y - p1.y);
+        if delta_x == delta_y {
             for (x, y) in (x_min..=x_max).zip(y_min..=y_max) {
                 *covered.entry(Point::new(x, y)).or_insert(0) += 1
             }
-        } else if p0.x - p1.x == -(p0.y - p1.y) {
+        } else if delta_x == -delta_y {
             for (x, y) in (x_min..=x_max).zip((y_min..=y_max).rev()) {
                 *covered.entry(Point::new(x, y)).or_insert(0) += 1
             }
         }
     }
-    println!("2: {}", covered.values().filter(|&&n| n >= 2).count())
+    println!("2: {}", covered.values().filter(|&&n| n >= 2).count());
+
+    Ok(())
 }

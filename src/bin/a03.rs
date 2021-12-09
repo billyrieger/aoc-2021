@@ -1,16 +1,13 @@
 use itertools::Itertools;
 
-fn main() {
-    let file = std::fs::read_to_string("input/03").unwrap();
-    let lines: Vec<Vec<char>> = file.lines().map(|line| line.chars().collect()).collect();
-    part1(&lines);
-    part2(&lines);
-}
+type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
-fn part1(lines: &[Vec<char>]) {
+fn main() -> Result<()> {
+    let file = std::fs::read_to_string("input/03.txt")?;
+    let lines: Vec<Vec<char>> = file.lines().map(|line| line.chars().collect()).collect();
     let line_len = lines[0].len();
 
-    let count = |lines: &[Vec<char>], a: char, b: char| -> String {
+    let count = |a: char, b: char| -> String {
         (0..line_len)
             .map(|i| {
                 let tally = lines.iter().map(|line| line[i]).counts();
@@ -20,15 +17,12 @@ fn part1(lines: &[Vec<char>]) {
             .collect()
     };
 
-    let gamma = i32::from_str_radix(&count(lines, '1', '0'), 2).unwrap();
-    let epsilon = i32::from_str_radix(&count(lines, '0', '1'), 2).unwrap();
+    let gamma = i32::from_str_radix(&count('1', '0'), 2)?;
+    let epsilon = i32::from_str_radix(&count('0', '1'), 2)?;
     println!("1: {}", gamma * epsilon);
-}
 
-fn part2(lines: &[Vec<char>]) {
-    let line_len = lines[0].len();
-
-    let reduce = |mut lines: Vec<Vec<char>>, a: char, b: char| -> String {
+    let reduce = |a: char, b: char| -> String {
+        let mut lines = lines.clone();
         for i in 0..line_len {
             if lines.len() == 1 {
                 break;
@@ -40,7 +34,9 @@ fn part2(lines: &[Vec<char>]) {
         lines[0].iter().collect()
     };
 
-    let oxygen = i32::from_str_radix(&reduce(Vec::from(lines), '1', '0'), 2).unwrap();
-    let co2 = i32::from_str_radix(&reduce(Vec::from(lines), '0', '1'), 2).unwrap();
+    let oxygen = i32::from_str_radix(&reduce('1', '0'), 2)?;
+    let co2 = i32::from_str_radix(&reduce('0', '1'), 2)?;
     println!("2: {}", oxygen * co2);
+
+    Ok(())
 }

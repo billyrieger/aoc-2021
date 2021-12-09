@@ -1,58 +1,44 @@
-type BingoBoard = Vec<Vec<i32>>;
+const LEN: usize = 5;
+type BingoBoard = Vec<i32>;
 
 fn main() {
-    let file = std::fs::read_to_string("input/04").unwrap();
+    let file = std::fs::read_to_string("input/04.txt").unwrap();
     let lines: Vec<_> = file.lines().collect();
     let called_numbers: Vec<i32> = lines[0].split(',').map(|n| n.parse().unwrap()).collect();
 
-    let bingo_boards: Vec<BingoBoard> = lines[2..]
-        .chunks(6)
+    let mut scores: Vec<(usize, i32)> = lines[2..]
+        .chunks(LEN + 1)
         .map(|rows| {
             rows.into_iter()
-                .map(|row| row.split_whitespace().map(|n| n.parse().unwrap()).collect())
-                .collect()
+                .flat_map(|row| row.split_whitespace().map(|n| n.parse().unwrap()))
+                .collect::<BingoBoard>()
         })
+        .filter_map(|board| check_board(&called_numbers, &board))
         .collect();
 
-    let scores: Vec<_> = bingo_boards
-        .iter()
-        .filter_map(|board| check_board(&called_numbers, board))
-        .collect();
-    println!(
-        "1: {}",
-        scores
-            .iter()
-            .min_by_key(|(nth_called, _score)| nth_called)
-            .unwrap()
-            .1
-    );
-    println!(
-        "2: {}",
-        scores
-            .iter()
-            .max_by_key(|(nth_called, _score)| nth_called)
-            .unwrap()
-            .1
-    );
+    scores.sort_by_key(|&(t, _)| t);
+
+    let (_, winning_score) = scores.first().unwrap();
+    let (_, losing_score) = scores.last().unwrap();
+
+    println!("1: {}", winning_score);
+    println!("2: {}", losing_score);
 }
 
 fn check_board(called_numbers: &[i32], board: &BingoBoard) -> Option<(usize, i32)> {
-    let mut seen = [[false; 5]; 5];
+    let mut seen = [false; LEN * LEN];
     for (nth_called, &called) in called_numbers.iter().enumerate() {
-        for (i, &value) in board.iter().flatten().enumerate() {
-            let (row, col) = (i / 5, i % 5);
-            if value == called {
-                seen[row][col] = true;
-            }
+        for (_, seen) in board.iter().zip(&mut seen).filter(|&(&v, _)| v == called) {
+            *seen = true;
         }
-        if (0..5).any(|i| (0..5).all(|j| seen[i][j]) || (0..5).all(|j| seen[j][i])) {
-            let mut unseen_total = 0;
-            for (i, seen) in seen.iter().flatten().enumerate() {
-                let (row, col) = (i / 5, i % 5);
-                if !seen {
-                    unseen_total += board[row][col];
-                }
-            }
+        let is_bingo = (0..LEN)
+            .any(|i| (0..LEN).all(|j| seen[i * LEN + j]) || (0..LEN).all(|j| seen[j * LEN + i]));
+        if is_bingo {
+            let unseen_total: i32 = seen
+                .iter()
+                .zip(board.iter())
+                .filter_map(|(seen, value)| if !seen { Some(value) } else { None })
+                .sum();
             return Some((nth_called, unseen_total * called));
         }
     }
