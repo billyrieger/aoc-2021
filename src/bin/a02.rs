@@ -1,5 +1,5 @@
-fn main() {
-    let file = std::fs::read_to_string("input/02.txt").unwrap();
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let file = std::fs::read_to_string("input/02.txt")?;
     let lines: Vec<_> = file.lines().map(parse_line).collect();
 
     let (mut pos, mut depth) = (0, 0);
@@ -8,7 +8,7 @@ fn main() {
             "forward" => pos += num,
             "down" => depth += num,
             "up" => depth -= num,
-            _ => panic!(),
+            _ => {}
         }
     }
     println!("1: {:?}", pos * depth);
@@ -22,10 +22,12 @@ fn main() {
             }
             "down" => aim += num,
             "up" => aim -= num,
-            _ => panic!(),
+            _ => {}
         }
     }
     println!("2: {:?}", pos * depth);
+
+    Ok(())
 }
 
 fn parse_line(line: &str) -> (&str, i32) {

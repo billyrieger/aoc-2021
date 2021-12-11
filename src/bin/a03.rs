@@ -1,8 +1,6 @@
 use itertools::Itertools;
 
-type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
-
-fn main() -> Result<()> {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let file = std::fs::read_to_string("input/03.txt")?;
     let lines: Vec<Vec<char>> = file.lines().map(|line| line.chars().collect()).collect();
     let line_len = lines[0].len();

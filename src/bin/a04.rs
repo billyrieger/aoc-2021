@@ -1,10 +1,21 @@
+use itertools::Itertools;
+
 const LEN: usize = 5;
 type BingoBoard = Vec<i32>;
 
-fn main() {
-    let file = std::fs::read_to_string("input/04.txt").unwrap();
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let file = std::fs::read_to_string("input/04.txt")?;
     let lines: Vec<_> = file.lines().collect();
     let called_numbers: Vec<i32> = lines[0].split(',').map(|n| n.parse().unwrap()).collect();
+
+    let _boards: Vec<Vec<i32>> = lines[2..]
+        .chunks(LEN + 1)
+        .map(|rows| {
+            rows.iter()
+                .flat_map(|row| row.split_whitespace().map(str::parse))
+                .try_collect()
+        })
+        .try_collect()?;
 
     let mut scores: Vec<(usize, i32)> = lines[2..]
         .chunks(LEN + 1)
@@ -23,6 +34,7 @@ fn main() {
 
     println!("1: {}", winning_score);
     println!("2: {}", losing_score);
+    Ok(())
 }
 
 fn check_board(called_numbers: &[i32], board: &BingoBoard) -> Option<(usize, i32)> {
@@ -31,12 +43,12 @@ fn check_board(called_numbers: &[i32], board: &BingoBoard) -> Option<(usize, i32
         for (_, seen) in board.iter().zip(&mut seen).filter(|&(&v, _)| v == called) {
             *seen = true;
         }
-        let is_bingo = (0..LEN)
-            .any(|i| (0..LEN).all(|j| seen[i * LEN + j]) || (0..LEN).all(|j| seen[j * LEN + i]));
-        if is_bingo {
+        let horizontal_bingo = (0..LEN).any(|i| (0..LEN).all(|j| seen[i * LEN + j]));
+        let vertical_bingo = (0..LEN).any(|i| (0..LEN).all(|j| seen[j * LEN + i]));
+        if horizontal_bingo || vertical_bingo {
             let unseen_total: i32 = seen
                 .iter()
-                .zip(board.iter())
+                .zip(board)
                 .filter_map(|(seen, value)| if !seen { Some(value) } else { None })
                 .sum();
             return Some((nth_called, unseen_total * called));

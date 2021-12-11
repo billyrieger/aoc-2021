@@ -3,19 +3,21 @@ use itertools::Itertools;
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let file = std::fs::read_to_string("input/07.txt")?;
     let positions: Vec<i32> = file.trim().split(',').map(str::parse).try_collect()?;
-    let &min = positions.iter().min().unwrap();
-    let &max = positions.iter().max().unwrap();
-    let fuel1 = |delta: i32| delta.abs();
-    let fuel2 = |delta: i32| delta.abs() * (delta.abs() + 1) / 2;
-    let fuel_used: i32 = (min..=max)
-        .map(|i| positions.iter().map(|pos| fuel1(pos - i)).sum())
-        .min()
-        .unwrap();
-    println!("1: {}", fuel_used);
-    let fuel_used: i32 = (min..=max)
-        .map(|i| positions.iter().map(|pos| fuel2(pos - i)).sum())
-        .min()
-        .unwrap();
-    println!("2: {}", fuel_used);
+    solve(&positions);
     Ok(())
+}
+
+fn solve(positions: &[i32]) -> Option<()> {
+    let &min_pos = positions.iter().min()?;
+    let &max_pos = positions.iter().max()?;
+    let fuel_used = |cost: &dyn Fn(i32) -> i32| -> Option<i32> {
+        (min_pos..=max_pos)
+            .map(|i| positions.iter().map(|pos| cost(pos - i)).sum::<i32>())
+            .min()
+    };
+    let cost1 = |delta: i32| delta.abs();
+    let cost2 = |delta: i32| delta.abs() * (delta.abs() + 1) / 2;
+    println!("1: {}", fuel_used(&cost1)?);
+    println!("2: {}", fuel_used(&cost2)?);
+    Some(())
 }
