@@ -1,18 +1,22 @@
+use aoc_2021::*;
 use std::collections::HashSet;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<()> {
     let file = std::fs::read_to_string("input/13.txt")?;
     let mut lines: Vec<&str> = file.lines().collect();
-    let _instructions = lines.split_off(lines.iter().position(|&line| line.is_empty()).unwrap() + 1);
+    let _first_blank = lines.iter().position(|&line| line.is_empty()).unwrap();
+    let _instructions =
+        lines.split_off(lines.iter().position(|&line| line.is_empty()).unwrap() + 1);
     lines.pop();
 
-    let mut points: HashSet<(i32, i32)> = lines
-        .iter()
-        .map(|line| {
-            let (x, y) = line.split_once(',').unwrap();
-            (x.parse().unwrap(), y.parse().unwrap())
-        })
-        .collect();
+    let mut points: HashSet<Point2D> = lines.into_iter().map(parse_point).try_collect()?;
+
+    let fold_x = |points: &HashSet<Point2D>, fold: i32| -> HashSet<Point2D> {
+        points
+            .iter()
+            .map(|&(x, y)| if x < fold { (x, y) } else { (2 * fold - x, y) })
+            .collect()
+    };
 
     points = fold_x(&points, 655);
     points = fold_y(&points, 447);
@@ -28,7 +32,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     points = fold_y(&points, 6);
 
     for y in 0..6 {
-        for x in 0..100 {
+        for x in 0..40 {
             print!("{}", if points.contains(&(x, y)) { "O" } else { " " });
         }
         println!();
@@ -37,16 +41,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn fold_x(points: &HashSet<(i32, i32)>, fold: i32) -> HashSet<(i32, i32)> {
+fn fold_y(points: &HashSet<Point2D>, fold: i32) -> HashSet<Point2D> {
     points
-        .into_iter()
-        .map(|&(x, y)| if x < fold { (x, y) } else { (2 * fold - x, y) })
-        .collect()
-}
-
-fn fold_y(points: &HashSet<(i32, i32)>, fold: i32) -> HashSet<(i32, i32)> {
-    points
-        .into_iter()
+        .iter()
         .map(|&(x, y)| if y < fold { (x, y) } else { (x, 2 * fold - y) })
         .collect()
 }
