@@ -9,6 +9,8 @@ publish = false
 [dependencies]
 itertools = "0.10.1"
 petgraph = "0.6.0"
+tap = "1.0.1"
+thiserror = "1.0.30"
 
 [[bin]]
 name = "a01"

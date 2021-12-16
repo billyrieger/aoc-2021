@@ -1,12 +1,12 @@
-use itertools::Itertools;
+use aoc_2021::*;
 
 const LEN: usize = 5;
 type BingoBoard = Vec<i32>;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<()> {
     let file = std::fs::read_to_string("input/04.txt")?;
     let lines: Vec<_> = file.lines().collect();
-    let called_numbers: Vec<i32> = lines[0].split(',').map(|n| n.parse().unwrap()).collect();
+    let called_numbers: Vec<i32> = lines[0].split(',').map(str::parse).try_collect()?;
 
     let _boards: Vec<Vec<i32>> = lines[2..]
         .chunks(LEN + 1)
@@ -37,12 +37,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn check_board(called_numbers: &[i32], board: &BingoBoard) -> Option<(usize, i32)> {
+fn check_board(called_numbers: &[i32], board: &[i32]) -> Option<(usize, i32)> {
     let mut seen = [false; LEN * LEN];
     for (nth_called, &called) in called_numbers.iter().enumerate() {
-        for (_, seen) in board.iter().zip(&mut seen).filter(|&(&v, _)| v == called) {
-            *seen = true;
-        }
+        itertools::zip(board, &mut seen)
+            .filter(|&(&v, _)| v == called)
+            .for_each(|(_, seen)| *seen = true);
         let horizontal_bingo = (0..LEN).any(|i| (0..LEN).all(|j| seen[i * LEN + j]));
         let vertical_bingo = (0..LEN).any(|i| (0..LEN).all(|j| seen[j * LEN + i]));
         if horizontal_bingo || vertical_bingo {

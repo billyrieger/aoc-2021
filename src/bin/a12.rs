@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
-use petgraph::{graph::NodeIndex, Graph, Undirected};
+use petgraph::graph::{NodeIndex, UnGraph};
+use tap::Tap;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let file = std::fs::read_to_string("input/12.txt")?;
@@ -9,10 +10,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .map(|line| line.split_once('-').unwrap())
         .collect();
     let mut nodes = HashMap::<&str, NodeIndex>::new();
-    let mut graph = Graph::<&str, (), Undirected>::new_undirected();
-    for (a, b) in &edges {
-        let a_node = *nodes.entry(a).or_insert_with(|| graph.add_node(a));
-        let b_node = *nodes.entry(b).or_insert_with(|| graph.add_node(b));
+    let mut graph = UnGraph::<&str, ()>::new_undirected();
+    for (a, b) in edges {
+        let [a_node, b_node] = [a, b].map(|x| *nodes.entry(x).or_insert_with(|| graph.add_node(x)));
         graph.add_edge(a_node, b_node, ());
     }
 
@@ -26,8 +26,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         for neighbor in graph.neighbors(last) {
             if !path.contains(&neighbor) || graph[neighbor].chars().all(char::is_uppercase) {
-                let mut new_path = path.clone();
-                new_path.push(neighbor);
+                let new_path = path.clone().tap_mut(|path| path.push(neighbor));
                 queue.push(new_path);
             }
         }
@@ -44,8 +43,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         for neighbor in graph.neighbors(last) {
             if !path.contains(&neighbor) || graph[neighbor].chars().all(char::is_uppercase) {
-                let mut new_path = path.clone();
-                new_path.push(neighbor);
+                let new_path = path.clone().tap_mut(|path| path.push(neighbor));
                 queue.push((new_path, double_visited));
             }
             if path.contains(&neighbor)
@@ -53,8 +51,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 && !double_visited
                 && !["start", "end"].contains(&graph[neighbor])
             {
-                let mut new_path = path.clone();
-                new_path.push(neighbor);
+                let new_path = path.clone().tap_mut(|path| path.push(neighbor));
                 queue.push((new_path, true));
             }
         }

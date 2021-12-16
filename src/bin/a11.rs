@@ -1,3 +1,5 @@
+use itertools::multizip;
+
 const LEN: usize = 10;
 
 #[derive(Clone, Debug)]
@@ -36,10 +38,8 @@ impl Grid {
         let mut new_grid = self.clone();
         new_grid.0.iter_mut().for_each(|o| *o += 1);
         let mut flashed = [false; 100];
-        while let Some(((i, _), flash)) = (0..100)
-            .zip(&new_grid.0)
-            .zip(&mut flashed)
-            .find(|((_, &val), &mut flashed)| !flashed && val >= 10)
+        while let Some((i, _, flash)) = multizip(((0..100), &new_grid.0, &mut flashed))
+            .find(|(_, &val, &mut flashed)| !flashed && val >= 10)
         {
             *flash = true;
             for neighbor in self.neighbors(Coords(i / 10, i % 10)) {
@@ -60,8 +60,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let file = std::fs::read_to_string("input/11.txt")?;
     let grid: Vec<u32> = file
         .lines()
-        .flat_map(str::chars)
-        .filter_map(|c| c.to_digit(10))
+        .flat_map(|line| line.chars().map(|c| c.to_digit(10).unwrap()))
         .collect();
     let mut grid = Grid(grid.try_into().unwrap());
     let mut total = 0;

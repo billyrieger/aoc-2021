@@ -9,21 +9,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         initial_state[timer?] += 1;
     }
 
-    let step_once = |prev: &State| -> State {
+    let step_once = |prev: &State| -> Option<State> {
         let mut next = State::default();
         // decrease the timer of each lanternfish
-        for i in 1..prev.len() {
-            next[i - 1] = prev[i];
-        }
+        (1..prev.len()).for_each(|i| next[i - 1] = prev[i]);
         // reset completed timers
         next[6] += prev[0];
         // create new lanternfish
         next[8] += prev[0];
-        next
+        Some(next)
     };
 
     let total = |steps: usize| -> i64 {
-        std::iter::successors(Some(initial_state), |state| Some(step_once(state)))
+        std::iter::successors(Some(initial_state), step_once)
             .nth(steps)
             .unwrap()
             .iter()

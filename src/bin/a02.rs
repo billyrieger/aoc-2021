@@ -11,7 +11,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             _ => {}
         }
     }
-    println!("1: {:?}", pos * depth);
+    println!("1: {}", pos * depth);
 
     let (mut pos, mut depth, mut aim) = (0, 0, 0);
     for &(dir, num) in &lines {
@@ -25,7 +25,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             _ => {}
         }
     }
-    println!("2: {:?}", pos * depth);
+    println!("2: {}", pos * depth);
 
     Ok(())
 }

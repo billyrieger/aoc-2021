@@ -8,11 +8,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn solve(positions: &[i32]) -> Option<()> {
-    let &min_pos = positions.iter().min()?;
-    let &max_pos = positions.iter().max()?;
+    let min_pos = *positions.iter().min()?;
+    let max_pos = *positions.iter().max()?;
     let fuel_used = |cost: &dyn Fn(i32) -> i32| -> Option<i32> {
         (min_pos..=max_pos)
-            .map(|i| positions.iter().map(|pos| cost(pos - i)).sum::<i32>())
+            .map(|i| positions.iter().map(|pos| cost(pos - i)).sum())
             .min()
     };
     let cost1 = |delta: i32| delta.abs();

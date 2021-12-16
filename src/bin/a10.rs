@@ -46,9 +46,11 @@ fn main() {
                 }
             }
         }
-        scores.push(stack
-            .into_iter()
-            .rfold(0, |score, c| 5 * score + score_opening(c)));
+        scores.push(
+            stack
+                .into_iter()
+                .rfold(0, |score, c| 5 * score + score_opening(c)),
+        );
     }
     scores.sort();
     println!("1: {}", corrupted);
