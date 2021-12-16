@@ -1,4 +1,8 @@
-use std::ops::{Index, IndexMut};
+use std::{
+    collections::BinaryHeap,
+    cmp::Reverse,
+    ops::{Index, IndexMut},
+};
 
 const INPUT: &str = include_str!("../../input/15.txt");
 
@@ -83,31 +87,23 @@ fn dijkstra(grid: &Grid<i32>) -> Option<i32> {
         cols: grid.cols,
         grid: vec![i32::MAX; (grid.rows * grid.cols) as usize],
     };
-    let mut visited = Grid {
-        rows: grid.rows,
-        cols: grid.cols,
-        grid: vec![false; (grid.rows * grid.cols) as usize],
-    };
-
     let start = (0, 0);
     let end = (grid.rows - 1, grid.cols - 1);
     risks[start] = 0;
+    let mut frontier = BinaryHeap::new();
+    frontier.push((Reverse(0), start));
 
-    while let Some((i, (_, visited))) = risks
-        .grid
-        .iter_mut()
-        .zip(&mut visited.grid)
-        .enumerate()
-        .filter(|(_, (_, visited))| !**visited)
-        .min_by_key(|(_, (risk, _))| **risk)
-    {
-        let i = i as i32;
-        let point = (i / risks.cols, i % risks.cols);
-        let risk = risks[point];
-        for neighbor in risks.orthogonal_neighbors(point) {
-            risks[neighbor] = risks[neighbor].min(risk + grid[neighbor]);
+    while let Some((Reverse(risk), point)) = frontier.pop() {
+        if risk > risks[point] {
+            continue;
         }
-        *visited = true;
+        for neighbor in risks.orthogonal_neighbors(point) {
+            let new_risk = risk + grid[neighbor];
+            if new_risk < risks[neighbor] {
+                risks[neighbor] = new_risk;
+                frontier.push((Reverse(new_risk), neighbor));
+            }
+        }
         if point == end {
             break;
         }
