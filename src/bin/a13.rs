@@ -1,5 +1,4 @@
 use aoc_2021::*;
-use std::collections::HashSet;
 
 fn main() -> Result<()> {
     let file = std::fs::read_to_string("input/13.txt")?;

@@ -1,4 +1,5 @@
-use std::collections::{HashSet, VecDeque};
+use aoc_2021::*;
+use std::collections::VecDeque;
 
 struct Grid(Vec<Vec<u32>>);
 
@@ -16,7 +17,7 @@ impl Grid {
     }
 
     fn floodfill(&self, start: (i32, i32)) -> usize {
-        let mut seen = HashSet::<(i32, i32)>::new();
+        let mut seen = HashSet::<(i32, i32)>::default();
         let mut frontier = VecDeque::from([start]);
         while let Some(coords) = frontier.pop_front() {
             if matches!(self.get(coords.0, coords.1), None | Some(9)) {

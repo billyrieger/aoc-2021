@@ -1,7 +1,6 @@
 use bitvec::prelude::*;
 
 const INPUT: &str = include_str!("../../input/16.txt");
-// const INPUT: &str = "620080001611562C8802118E34";
 
 type BitSlice = bitvec::slice::BitSlice<Msb0, u8>;
 type BitVec = bitvec::vec::BitVec<Msb0, u8>;
@@ -27,13 +26,14 @@ enum Data {
 }
 
 impl Packet {
-    fn parse(input: &BitSlice) -> (usize, Self) {
+    fn parse(mut input: &BitSlice) -> (usize, Self) {
         let version = decode(&input[0..3]);
         let type_id = decode(&input[3..6]);
-        let mut consumed = 6;
+        input = &input[6..];
+        let mut consumed = 0;
         let data = if type_id == 4 {
             let mut value = BitVec::new();
-            for chunk in input[6..].chunks(5) {
+            for chunk in input.chunks(5) {
                 consumed += 5;
                 value.extend_from_bitslice(&chunk[1..]);
                 if !chunk[0] {
@@ -69,7 +69,7 @@ impl Packet {
             }
         };
         (
-            consumed,
+            consumed + 6,
             Self {
                 version,
                 type_id,

@@ -1,5 +1,5 @@
-use std::fmt;
 use itertools::Itertools;
+use std::fmt;
 
 const INPUT: &str = include_str!("../../input/18.txt");
 
@@ -120,12 +120,9 @@ impl Snailfish {
     }
 
     fn magnitude(mut self) -> u32 {
-        loop {
-            if self.0.len() == 1 {
-                break;
-            }
+        while self.0.len() > 1 {
             let max_depth = self.0.iter().map(|n| n.depth).max().unwrap();
-            for i in 0..(self.0.len() - 1) {
+            'inner: for i in 0..(self.0.len() - 1) {
                 if self.0[i].depth == max_depth && self.0[i + 1].depth == max_depth {
                     let magnitude = 3 * self.0[i].value + 2 * self.0[i + 1].value;
                     self.0[i] = Num {
@@ -133,7 +130,7 @@ impl Snailfish {
                         depth: self.0[i].depth - 1,
                     };
                     self.0.remove(i + 1);
-                    break;
+                    break 'inner;
                 }
             }
         }
@@ -142,7 +139,7 @@ impl Snailfish {
 }
 
 fn main() {
-    solve().unwrap()
+    solve().unwrap();
 }
 
 fn solve() -> Option<()> {
@@ -152,9 +149,12 @@ fn solve() -> Option<()> {
         total = Snailfish::add(total, fish.clone());
     }
     println!("1: {}", total.magnitude());
-    let max_sum = all_fish.iter().tuple_combinations().map(|(a, b)| {
-        Snailfish::add(a.clone(), b.clone()).magnitude()
-    }).max().unwrap();
+    let max_sum = all_fish
+        .iter()
+        .tuple_combinations()
+        .map(|(a, b)| Snailfish::add(a.clone(), b.clone()).magnitude())
+        .max()
+        .unwrap();
     println!("2: {}", max_sum);
     Some(())
 }

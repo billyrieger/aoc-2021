@@ -10,7 +10,8 @@ fn solve() -> Option<()> {
     let (p0, p1) = (p1?, p2?);
     part1(p0, p1)?;
 
-    dbg!(Universe::new(p0, p1).count_winning());
+    let (a, b) = Universe::new(p0, p1).count_winning();
+    println!("2: {}", a.max(b));
     Some(())
 }
 

@@ -1,7 +1,6 @@
-use std::collections::{HashMap, HashSet, VecDeque};
-
-use aoc_2021::Itertools;
+use aoc_2021::*;
 use itertools::iproduct;
+use std::collections::VecDeque;
 
 const INPUT: &str = include_str!("../../input/19.txt");
 
@@ -13,7 +12,7 @@ struct Scanner {
 
 impl Scanner {
     fn new(input: Vec<Point>) -> Option<Self> {
-        let mut beacons: HashMap<_, _> = input.iter().map(|&p| (p, HashSet::new())).collect();
+        let mut beacons: HashMap<_, _> = input.iter().map(|&p| (p, HashSet::default())).collect();
         for (&u, &v) in input.iter().tuple_combinations() {
             let dist = norm_sq(u, v);
             beacons.get_mut(&u)?.insert(dist);
@@ -63,7 +62,7 @@ impl Scanner {
                     new = [new[0] + delta[0], new[1] + delta[1], new[2] + delta[2]];
                     self.beacons
                         .entry(new)
-                        .or_insert_with(|| HashSet::new())
+                        .or_insert_with(|| HashSet::default())
                         .extend(dists);
                 }
                 let mut s = func([0, 0, 0]);

@@ -28,7 +28,7 @@ impl InfiniteGrid {
         let (min_row, max_row) = self.grid.keys().map(|(r, _)| r).minmax().into_option()?;
         let (min_col, max_col) = self.grid.keys().map(|(_, c)| c).minmax().into_option()?;
         for (row, col) in iproduct!((min_row - 1)..=(max_row + 1), (min_col - 1)..=(max_col + 1)) {
-            let value: usize = iproduct!(-1..=1, -1..=1)
+            let value = iproduct!(-1..=1, -1..=1)
                 .map(|(dr, dc)| self.get((row + dr, col + dc)))
                 .fold(0, |sum, digit| 2 * sum + if digit { 1 } else { 0 });
             new_grid.set((row, col), rules[value]);
@@ -53,10 +53,10 @@ fn solve() -> Option<()> {
     let grid: HashMap<(i32, i32), bool> = INPUT
         .lines()
         .skip(2)
-        .zip(0i32..)
+        .zip(0..)
         .flat_map(|(line, row)| {
             line.chars()
-                .zip(0i32..)
+                .zip(0..)
                 .map(move |(c, col)| ((row, col), c == '#'))
         })
         .collect();

@@ -1,7 +1,6 @@
 use itertools::iproduct;
 use regex::Regex;
 
-// const INPUT: &str = "target area: x=20..30, y=-10..-5";
 const INPUT: &str = include_str!("../../input/17.txt");
 
 #[derive(Debug)]
@@ -21,7 +20,7 @@ impl Region {
             }
             x_pos += x_vel;
             y_pos += y_vel;
-            x_vel = 0.max(x_vel - 1);
+            x_vel = (x_vel - 1).max(0);
             y_vel -= 1;
         }
         false
@@ -33,13 +32,13 @@ fn main() {
 }
 
 fn solve() -> Option<()> {
-    let re = Regex::new(r"^target area: x=(?P<x_min>-?\d+)\.\.(?P<x_max>-?\d+), y=(?P<y_min>-?\d+)\.\.(?P<y_max>-?\d+)$").ok()?;
+    let re = Regex::new(r"^target area: x=(-?\d+)\.\.(-?\d+), y=(-?\d+)\.\.(-?\d+)$").ok()?;
     let captures = re.captures(INPUT.trim())?;
     let region = Region {
-        x_min: captures.name("x_min")?.as_str().parse().ok()?,
-        x_max: captures.name("x_max")?.as_str().parse().ok()?,
-        y_min: captures.name("y_min")?.as_str().parse().ok()?,
-        y_max: captures.name("y_max")?.as_str().parse().ok()?,
+        x_min: captures.get(1)?.as_str().parse().ok()?,
+        x_max: captures.get(2)?.as_str().parse().ok()?,
+        y_min: captures.get(3)?.as_str().parse().ok()?,
+        y_max: captures.get(4)?.as_str().parse().ok()?,
     };
     println!("1: {}", (-region.y_min) * (-region.y_min + 1) / 2);
     // solution to x*(x+1)/2 >= x_min

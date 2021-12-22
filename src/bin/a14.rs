@@ -11,7 +11,9 @@ fn main() {
 }
 
 fn solve(n: usize) -> Option<u64> {
-    let template: Vec<char> = INPUT.lines().next()?.chars().collect();
+    let mut template: Vec<char> = INPUT.lines().next()?.chars().collect();
+    template.insert(0, '_');
+    template.push('_');
     let rules = INPUT
         .lines()
         .skip(2)
@@ -34,6 +36,8 @@ fn solve(n: usize) -> Option<u64> {
             if let Some([new0, new1]) = rules.get(pair) {
                 *new_state.entry(new0).or_insert(0) += count;
                 *new_state.entry(new1).or_insert(0) += count;
+            } else {
+                *new_state.entry(pair).or_insert(0) += count;
             }
         }
         state = new_state;
@@ -44,9 +48,10 @@ fn solve(n: usize) -> Option<u64> {
         *elements.entry(a).or_insert(0) += count;
         *elements.entry(b).or_insert(0) += count;
     }
+    elements.remove(&'_');
     let max = elements.values().max()? / 2;
     let min = elements.values().min()? / 2;
+    dbg!(&elements);
 
-    // why plus one?
-    Some(max - min + 1)
+    Some(max - min)
 }
