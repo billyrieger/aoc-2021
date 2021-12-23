@@ -1,7 +1,6 @@
 pub mod prelude {
+    pub use crate::{Error, Result};
     pub use itertools::Itertools;
-    pub use crate::Error;
-    pub use crate::Result;
 
     pub type HashMap<K, V> = rustc_hash::FxHashMap<K, V>;
     pub type HashSet<K> = rustc_hash::FxHashSet<K>;
@@ -12,9 +11,9 @@ pub type Point2D = (i32, i32);
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
-    #[error("Could not parse input")]
+    #[error("Parse error")]
     Parse,
-    #[error("Could not parse input")]
+    #[error("Logic error")]
     Logic,
 }
 

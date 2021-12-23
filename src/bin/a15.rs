@@ -1,9 +1,7 @@
 use aoc::prelude::*;
-use std::{
-    collections::BinaryHeap,
-    cmp::Reverse,
-    ops::{Index, IndexMut},
-};
+use std::cmp::Reverse;
+use std::collections::BinaryHeap;
+use std::ops::{Index, IndexMut};
 
 const INPUT: &str = include_str!("../../input/15.txt");
 
