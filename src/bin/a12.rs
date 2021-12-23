@@ -1,9 +1,11 @@
+use aoc::prelude::*;
+
 use std::collections::HashMap;
 
 use petgraph::graph::{NodeIndex, UnGraph};
 use tap::Tap;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<()> {
     let file = std::fs::read_to_string("input/12.txt")?;
     let edges: Vec<(&str, &str)> = file
         .lines()

@@ -1,4 +1,6 @@
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+use aoc::prelude::*;
+
+fn main() -> Result<()> {
     let file = std::fs::read_to_string("input/02.txt")?;
     let lines: Vec<_> = file.lines().map(parse_line).collect();
 

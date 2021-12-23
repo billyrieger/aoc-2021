@@ -1,23 +1,20 @@
-use itertools::Itertools;
+use aoc::prelude::*;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let file = std::fs::read_to_string("input/07.txt")?;
-    let positions: Vec<i32> = file.trim().split(',').map(str::parse).try_collect()?;
-    solve(&positions);
-    Ok(())
+fn min_cost(positions: &[i32], fuel: impl Fn(i32) -> i32) -> Option<i32> {
+    let (&min_pos, &max_pos) = positions.iter().minmax().into_option()?;
+    (min_pos..=max_pos)
+        .map(|i| positions.iter().map(|pos| fuel((pos - i).abs())).sum())
+        .min()
 }
 
-fn solve(positions: &[i32]) -> Option<()> {
-    let min_pos = *positions.iter().min()?;
-    let max_pos = *positions.iter().max()?;
-    let fuel_used = |cost: &dyn Fn(i32) -> i32| -> Option<i32> {
-        (min_pos..=max_pos)
-            .map(|i| positions.iter().map(|pos| cost(pos - i)).sum())
-            .min()
-    };
-    let cost1 = |delta: i32| delta.abs();
-    let cost2 = |delta: i32| delta.abs() * (delta.abs() + 1) / 2;
-    println!("1: {}", fuel_used(&cost1)?);
-    println!("2: {}", fuel_used(&cost2)?);
-    Some(())
+fn main() -> Result<()> {
+    let file = std::fs::read_to_string("input/07.txt")?;
+    let input: Vec<i32> = file.trim().split(',').map(str::parse).try_collect()?;
+
+    let fuel = |delta: i32| delta;
+    println!("1: {}", min_cost(&input, fuel).ok_or(Error::Logic)?);
+
+    let fuel = |delta: i32| delta * (delta + 1) / 2;
+    println!("2: {}", min_cost(&input, fuel).ok_or(Error::Logic)?);
+    Ok(())
 }

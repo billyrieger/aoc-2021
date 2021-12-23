@@ -1,3 +1,4 @@
+use aoc::prelude::*;
 use itertools::Itertools;
 use std::fmt;
 
@@ -138,8 +139,9 @@ impl Snailfish {
     }
 }
 
-fn main() {
+fn main() -> Result<()> {
     solve().unwrap();
+    Ok(())
 }
 
 fn solve() -> Option<()> {

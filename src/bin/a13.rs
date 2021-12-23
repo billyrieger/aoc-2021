@@ -1,4 +1,6 @@
-use aoc_2021::*;
+use aoc::parse_point;
+use aoc::prelude::*;
+use aoc::Point2D;
 
 fn main() -> Result<()> {
     let file = std::fs::read_to_string("input/13.txt")?;

@@ -1,3 +1,4 @@
+use aoc::prelude::*;
 use std::collections::HashMap;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
@@ -16,7 +17,7 @@ fn min_max(a: i32, b: i32) -> (i32, i32) {
     (a.min(b), a.max(b))
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<()> {
     let parse_line = |line: &str| -> Option<(Point, Point)> {
         let (a, b) = line.split_once(" -> ")?;
         let (x0, y0) = a.split_once(',')?;

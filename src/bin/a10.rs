@@ -1,3 +1,5 @@
+use aoc::prelude::*;
+
 const OPENING: [char; 4] = ['(', '[', '{', '<'];
 const CLOSING: [char; 4] = [')', ']', '}', '>'];
 
@@ -25,8 +27,8 @@ fn score_opening(open: char) -> i64 {
     }
 }
 
-fn main() {
-    let file = std::fs::read_to_string("input/10.txt").unwrap();
+fn main() -> Result<()> {
+    let file = std::fs::read_to_string("input/10.txt")?;
     let mut corrupted = 0;
     let mut scores = vec![];
     'outer: for line in file.lines() {
@@ -55,4 +57,5 @@ fn main() {
     scores.sort();
     println!("1: {}", corrupted);
     println!("2: {}", scores[scores.len() / 2]);
+    Ok(())
 }

@@ -1,4 +1,4 @@
-use aoc_2021::*;
+use aoc::prelude::*;
 use std::collections::VecDeque;
 
 struct Grid(Vec<Vec<u32>>);

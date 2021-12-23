@@ -1,3 +1,4 @@
+use aoc::prelude::*;
 use std::{
     collections::BinaryHeap,
     cmp::Reverse,
@@ -43,8 +44,9 @@ impl<T> IndexMut<Point> for Grid<T> {
     }
 }
 
-fn main() {
+fn main() -> Result<()> {
     solve().unwrap();
+    Ok(())
 }
 
 fn solve() -> Option<()> {

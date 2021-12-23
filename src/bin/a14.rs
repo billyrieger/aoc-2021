@@ -1,4 +1,5 @@
 #![feature(array_windows)]
+use aoc::prelude::*;
 
 use std::collections::HashMap;
 
@@ -6,8 +7,9 @@ type Pair = [char; 2];
 
 const INPUT: &'static str = include_str!("../../input/14.txt");
 
-fn main() {
+fn main() -> Result<()> {
     println!("{}", solve(40).unwrap());
+    Ok(())
 }
 
 fn solve(n: usize) -> Option<u64> {

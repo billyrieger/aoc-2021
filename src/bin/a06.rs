@@ -1,7 +1,9 @@
+use aoc::prelude::*;
+
 // `state[i]` is the number of lanternfish with an internal timer of `i`.
 type State = [i64; 9];
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<()> {
     let file = std::fs::read_to_string("input/06.txt")?;
 
     let mut initial_state = State::default();

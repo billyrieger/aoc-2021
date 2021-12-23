@@ -1,4 +1,4 @@
-use aoc_2021::*;
+use aoc::prelude::*;
 use itertools::iproduct;
 use std::collections::VecDeque;
 

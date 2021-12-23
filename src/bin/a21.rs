@@ -1,4 +1,4 @@
-use aoc_2021::Itertools;
+use aoc::prelude::*;
 
 const INPUT: &str = include_str!("../../input/21.txt");
 

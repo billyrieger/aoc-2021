@@ -1,1 +1,5 @@
-fn main() {}
+use aoc::prelude::*;
+
+fn main() -> Result<()> {
+    Ok(())
+}

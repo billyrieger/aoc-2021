@@ -1,3 +1,4 @@
+use aoc::prelude::*;
 use itertools::multizip;
 
 const LEN: usize = 10;
@@ -56,7 +57,7 @@ impl Grid {
     }
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<()> {
     let file = std::fs::read_to_string("input/11.txt")?;
     let grid: Vec<u32> = file
         .lines()

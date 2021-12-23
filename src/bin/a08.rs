@@ -1,6 +1,6 @@
-use itertools::Itertools;
+use aoc::prelude::*;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<()> {
     let file = std::fs::read_to_string("input/08.txt")?;
     println!(
         "1: {}",

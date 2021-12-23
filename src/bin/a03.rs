@@ -1,6 +1,6 @@
-use itertools::Itertools;
+use aoc::prelude::*;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<()> {
     let file = std::fs::read_to_string("input/03.txt")?;
     let lines: Vec<Vec<char>> = file.lines().map(|line| line.chars().collect()).collect();
     let line_len = lines[0].len();

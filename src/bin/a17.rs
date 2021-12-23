@@ -1,3 +1,4 @@
+use aoc::prelude::*;
 use itertools::iproduct;
 use regex::Regex;
 
@@ -27,8 +28,9 @@ impl Region {
     }
 }
 
-fn main() {
+fn main() -> Result<()> {
     solve().unwrap();
+    Ok(())
 }
 
 fn solve() -> Option<()> {

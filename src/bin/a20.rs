@@ -1,7 +1,6 @@
-use std::collections::HashMap;
-
-use aoc_2021::Itertools;
+use aoc::prelude::*;
 use itertools::iproduct;
+use std::collections::HashMap;
 
 const INPUT: &str = include_str!("../../input/20.txt");
 

@@ -1,4 +1,4 @@
-use aoc_2021::*;
+use aoc::prelude::*;
 
 const LEN: usize = 5;
 type BingoBoard = Vec<i32>;

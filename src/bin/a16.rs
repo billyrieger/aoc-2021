@@ -1,3 +1,4 @@
+use aoc::prelude::*;
 use bitvec::prelude::*;
 
 const INPUT: &str = include_str!("../../input/16.txt");
@@ -109,7 +110,7 @@ impl Packet {
     }
 }
 
-fn main() -> aoc_2021::Result<()> {
+fn main() -> Result<()> {
     let bits = hex::decode(INPUT.trim())?;
     let bits = bits.view_bits::<Msb0>();
     let (_, packet) = Packet::parse(&bits);
