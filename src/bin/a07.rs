@@ -12,9 +12,9 @@ fn main() -> Result<()> {
     let input: Vec<i32> = file.trim().split(',').map(str::parse).try_collect()?;
 
     let fuel = |delta: i32| delta;
-    println!("1: {}", min_cost(&input, fuel).ok_or(Error::Logic)?);
+    println!("1: {}", min_cost(&input, fuel).ok_or(AocError::Logic)?);
 
     let fuel = |delta: i32| delta * (delta + 1) / 2;
-    println!("2: {}", min_cost(&input, fuel).ok_or(Error::Logic)?);
+    println!("2: {}", min_cost(&input, fuel).ok_or(AocError::Logic)?);
     Ok(())
 }

@@ -113,7 +113,7 @@ impl Packet {
 fn main() -> Result<()> {
     let bits = hex::decode(INPUT.trim())?;
     let bits = bits.view_bits::<Msb0>();
-    let (_, packet) = Packet::parse(&bits);
+    let (_, packet) = Packet::parse(bits);
     println!("1: {}", packet.version_sum());
     println!("2: {}", packet.eval());
     Ok(())

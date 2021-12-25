@@ -2,39 +2,49 @@ use aoc::prelude::*;
 
 fn main() -> Result<()> {
     let file = std::fs::read_to_string("input/03.txt")?;
-    let lines: Vec<Vec<char>> = file.lines().map(|line| line.chars().collect()).collect();
-    let line_len = lines[0].len();
+    let input: Vec<BitVec> = file
+        .lines()
+        .map(|line| line.chars().map(|c| c == '1').collect())
+        .collect();
+    solve(&input).ok_or(AocError::Logic)?;
+    Ok(())
+}
 
-    let count = |a: char, b: char| -> String {
-        (0..line_len)
-            .map(|i| {
-                let tally = lines.iter().map(|line| line[i]).counts();
-                let keep = if tally[&'1'] >= tally[&'0'] { a } else { b };
-                keep
-            })
-            .collect()
-    };
-
-    let gamma = i32::from_str_radix(&count('1', '0'), 2)?;
-    let epsilon = i32::from_str_radix(&count('0', '1'), 2)?;
+fn solve(input: &[BitVec]) -> Option<()> {
+    let gamma = counts(&input, true)?;
+    let epsilon = counts(&input, false)?;
     println!("1: {}", gamma * epsilon);
 
-    let reduce = |a: char, b: char| -> String {
-        let mut lines = lines.clone();
-        for i in 0..line_len {
-            if lines.len() == 1 {
-                break;
-            }
-            let tally = lines.iter().map(|line| line[i]).counts();
-            let keep = if tally[&'1'] >= tally[&'0'] { a } else { b };
-            lines.retain(|line| line[i] == keep);
-        }
-        lines[0].iter().collect()
-    };
-
-    let oxygen = i32::from_str_radix(&reduce('1', '0'), 2)?;
-    let co2 = i32::from_str_radix(&reduce('0', '1'), 2)?;
+    let oxygen = reduces(&input, false)?;
+    let co2 = reduces(&input, true)?;
     println!("2: {}", oxygen * co2);
+    Some(())
+}
 
-    Ok(())
+fn counts(input: &[BitVec], invert: bool) -> Option<i32> {
+    let mut most_common = BitVec::new();
+    for i in 0..input.first()?.len() {
+        let tally = input.iter().map(|bits| bits[i]).counts();
+        most_common.push((tally[&true] >= tally[&false]) ^ invert);
+    }
+    Some(to_binary(&most_common))
+}
+
+fn reduces(input: &[BitVec], invert: bool) -> Option<i32> {
+    let mut input = Vec::from(input);
+    for i in 0..input.first()?.len() {
+        if input.len() == 1 {
+            break;
+        }
+        let tally = input.iter().map(|line| line[i]).counts();
+        let keep = (tally[&true] >= tally[&false]) ^ invert;
+        input.retain(|line| line[i] == keep);
+    }
+    Some(to_binary(input.first()?))
+}
+
+fn to_binary(digits: &BitSlice) -> i32 {
+    digits
+        .iter()
+        .fold(0, |total, bit| 2 * total + if *bit { 1 } else { 0 })
 }

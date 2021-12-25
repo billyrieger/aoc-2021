@@ -46,7 +46,7 @@ impl Universe {
         let mut wins = (0, 0);
         let stats = [[3, 1], [4, 3], [5, 6], [6, 7], [7, 6], [8, 3], [9, 1]];
         for [sum, freq] in stats {
-            let mut universe = self.clone();
+            let mut universe = *self;
             universe.step(sum);
             if universe.scores[0] >= self.threshold {
                 wins.0 += freq;

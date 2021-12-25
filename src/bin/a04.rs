@@ -20,7 +20,7 @@ fn main() -> Result<()> {
     let mut scores: Vec<(usize, i32)> = lines[2..]
         .chunks(LEN + 1)
         .map(|rows| {
-            rows.into_iter()
+            rows.iter()
                 .flat_map(|row| row.split_whitespace().map(|n| n.parse().unwrap()))
                 .collect::<BingoBoard>()
         })
