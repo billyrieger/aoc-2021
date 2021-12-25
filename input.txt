@@ -1,0 +1,187 @@
+############
+inp w
+x = z % 26 + 10
+div z 1
+eql x w
+eql x 0
+y = 25
+mul y x
+add y 1
+mul z y
+y = w + 12
+mul y x
+add z y
+
+############
+inp w
+x = z % 26 + 10
+div z 1
+eql x w
+eql x 0
+y = 25
+mul y x
+add y 1
+mul z y
+y = w + 10
+mul y x
+add z y
+
+############
+inp w
+x = z % 26 + 12
+div z 1
+eql x w
+eql x 0
+y = 25
+mul y x
+add y 1
+mul z y
+y = w + 8
+mul y x
+add z y
+
+############
+inp w
+x = z % 26 + 11
+div z 1
+eql x w
+eql x 0
+y = 25
+mul y x
+add y 1
+mul z y
+y = w + 4
+mul y x
+add z y
+
+############
+inp w
+x = z % 26 + 0
+div z 26
+eql x w
+eql x 0
+y = 25
+mul y x
+add y 1
+mul z y
+y = w + 3
+mul y x
+add z y
+
+############
+inp w
+x = z % 26 + 15
+div z 1
+eql x w
+eql x 0
+y = 25
+mul y x
+add y 1
+mul z y
+y = w + 10
+mul y x
+add z y
+
+############
+inp w
+x = z % 26 + 13
+div z 1
+eql x w
+eql x 0
+y = 25
+mul y x
+add y 1
+mul z y
+y = w + 6
+mul y x
+add z y
+
+############
+inp w
+x = z % 26 - 12
+div z 26
+eql x w
+eql x 0
+y = 25
+mul y x
+add y 1
+mul z y
+y = w + 13
+mul y x
+add z y
+
+############
+inp w
+x = z % 26 - 15
+div z 26
+eql x w
+eql x 0
+y = 25
+mul y x
+add y 1
+mul z y
+y = w + 8
+mul y x
+add z y
+
+############
+inp w
+x = z % 26 - 15
+div z 26
+eql x w
+eql x 0
+y = 25
+mul y x
+add y 1
+mul z y
+y = w + 1
+mul y x
+add z y
+
+############
+inp w
+x = z % 26 - 4
+div z 26
+eql x w
+eql x 0
+y = 25
+mul y x
+add y 1
+mul z y
+y = w + 7
+mul y x
+add z y
+
+############
+inp w
+x = z % 26 + 10
+div z 1
+eql x w
+eql x 0
+y = 25
+mul y x
+add y 1
+mul z y
+y = w + 6
+mul y x
+add z y
+
+############
+inp w
+x = z % 26 - 5
+div z 26
+eql x w
+eql x 0
+y = 25
+mul y x
+add y 1
+mul z y
+y = w + 9
+mul y x
+add z y
+
+############
+inp w
+x = (z % 26 - 12) != w
+div z 26
+if x: z = z * 26 + (w + 9)
