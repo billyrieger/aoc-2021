@@ -1,4 +1,4 @@
-use aoc::prelude::*;
+use aoc::*;
 
 const OPENING: [char; 4] = ['(', '[', '{', '<'];
 const CLOSING: [char; 4] = [')', ']', '}', '>'];

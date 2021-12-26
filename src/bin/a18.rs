@@ -1,5 +1,4 @@
-use aoc::prelude::*;
-use itertools::Itertools;
+use aoc::*;
 use std::fmt;
 
 const INPUT: &str = include_str!("../../input/18.txt");

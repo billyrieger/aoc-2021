@@ -1,4 +1,4 @@
-use aoc::prelude::*;
+use aoc::*;
 
 type IVec3 = na::Vector3<i32>;
 

@@ -1,4 +1,4 @@
-use aoc::prelude::*;
+use aoc::*;
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum Amphipod {

@@ -1,4 +1,4 @@
-use aoc::prelude::*;
+use aoc::*;
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 use std::ops::{Index, IndexMut};

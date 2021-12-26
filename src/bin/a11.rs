@@ -1,4 +1,4 @@
-use aoc::prelude::*;
+use aoc::*;
 use itertools::multizip;
 
 const LEN: usize = 10;

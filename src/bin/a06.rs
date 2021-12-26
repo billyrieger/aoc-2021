@@ -1,4 +1,4 @@
-use aoc::prelude::*;
+use aoc::*;
 
 // `state[i]` is the number of lanternfish with an internal timer of `i`.
 type State = [i64; 9];

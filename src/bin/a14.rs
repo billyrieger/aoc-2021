@@ -1,5 +1,5 @@
 #![feature(array_windows)]
-use aoc::prelude::*;
+use aoc::*;
 
 use std::collections::HashMap;
 

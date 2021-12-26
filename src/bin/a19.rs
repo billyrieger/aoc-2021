@@ -1,5 +1,4 @@
-use aoc::prelude::*;
-use itertools::iproduct;
+use aoc::*;
 use std::collections::VecDeque;
 
 const INPUT: &str = include_str!("../../input/19.txt");

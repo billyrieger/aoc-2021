@@ -1,6 +1,4 @@
-use aoc::prelude::*;
-use itertools::iproduct;
-use std::collections::HashMap;
+use aoc::*;
 
 const INPUT: &str = include_str!("../../input/20.txt");
 
@@ -21,7 +19,7 @@ impl InfiniteGrid {
 
     fn update(&self, rules: &[bool]) -> Option<Self> {
         let mut new_grid = Self {
-            grid: HashMap::new(),
+            grid: HashMap::default(),
             boundary: if self.boundary { rules[511] } else { rules[0] },
         };
         let (min_row, max_row) = self.grid.keys().map(|(r, _)| r).minmax().into_option()?;

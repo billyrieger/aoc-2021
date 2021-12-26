@@ -1,4 +1,4 @@
-use aoc::prelude::*;
+use aoc::*;
 use bitvec::prelude::*;
 
 const INPUT: &str = include_str!("../../input/16.txt");

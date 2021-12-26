@@ -1,5 +1,4 @@
-use aoc::prelude::*;
-use itertools::iproduct;
+use aoc::*;
 use regex::Regex;
 
 const INPUT: &str = include_str!("../../input/17.txt");

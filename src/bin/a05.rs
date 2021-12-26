@@ -1,5 +1,4 @@
-use aoc::prelude::*;
-use std::collections::HashMap;
+use aoc::*;
 
 fn min_max(a: i32, b: i32) -> (i32, i32) {
     (a.min(b), a.max(b))
@@ -14,7 +13,7 @@ fn main() -> Result<()> {
             Ok((aoc::parse_point2(a)?, aoc::parse_point2(b)?))
         })
         .collect::<Result<_>>()?;
-    let mut covered = HashMap::<IVec2, u32>::new();
+    let mut covered = HashMap::<IVec2, u32>::default();
 
     for &(p0, p1) in &endpoints {
         let (x_min, x_max) = min_max(p0.x, p1.x);

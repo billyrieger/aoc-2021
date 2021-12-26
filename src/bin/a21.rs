@@ -1,4 +1,4 @@
-use aoc::prelude::*;
+use aoc::*;
 
 const INPUT: &str = include_str!("../../input/21.txt");
 

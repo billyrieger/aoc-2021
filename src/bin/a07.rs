@@ -1,4 +1,4 @@
-use aoc::prelude::*;
+use aoc::*;
 
 fn min_cost(positions: &[i32], fuel: impl Fn(i32) -> i32) -> Option<i32> {
     let (&min_pos, &max_pos) = positions.iter().minmax().into_option()?;

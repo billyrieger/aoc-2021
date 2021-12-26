@@ -1,4 +1,4 @@
-use aoc::prelude::*;
+use aoc::*;
 
 fn main() -> Result<()> {
     let file = std::fs::read_to_string("input/08.txt")?;

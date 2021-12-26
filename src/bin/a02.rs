@@ -1,4 +1,4 @@
-use aoc::prelude::*;
+use aoc::*;
 
 type Command<'a> = (&'a str, i32);
 
