@@ -1,12 +1,25 @@
 use aoc::prelude::*;
 
+type Command<'a> = (&'a str, i32);
+
 fn main() -> Result<()> {
     let file = std::fs::read_to_string("input/02.txt")?;
-    let lines: Vec<_> = file.lines().map(parse_line).collect();
+    let commands: Vec<Command> = file
+        .lines()
+        .map(|line| {
+            let (dir, num) = line.split_once(' ').ok_or(AocError::Parse)?;
+            Ok((dir, num.parse()?))
+        })
+        .collect::<Result<_>>()?;
+    part1(&commands);
+    part2(&commands);
+    Ok(())
+}
 
+fn part1(commands: &[Command]) {
     let (mut pos, mut depth) = (0, 0);
-    for &(dir, num) in &lines {
-        match dir {
+    for &(direction, num) in commands {
+        match direction {
             "forward" => pos += num,
             "down" => depth += num,
             "up" => depth -= num,
@@ -14,9 +27,11 @@ fn main() -> Result<()> {
         }
     }
     println!("1: {}", pos * depth);
+}
 
+fn part2(commands: &[Command]) {
     let (mut pos, mut depth, mut aim) = (0, 0, 0);
-    for &(dir, num) in &lines {
+    for &(dir, num) in commands {
         match dir {
             "forward" => {
                 pos += num;
@@ -28,12 +43,4 @@ fn main() -> Result<()> {
         }
     }
     println!("2: {}", pos * depth);
-
-    Ok(())
-}
-
-fn parse_line(line: &str) -> (&str, i32) {
-    let (dir, num) = line.split_once(' ').unwrap();
-    let num = num.parse().unwrap();
-    (dir, num)
 }

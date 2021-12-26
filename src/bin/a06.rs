@@ -5,11 +5,10 @@ type State = [i64; 9];
 
 fn main() -> Result<()> {
     let file = std::fs::read_to_string("input/06.txt")?;
-
+    let input: Vec<usize> = file.trim().split(',').map(str::parse).try_collect()?;
     let mut initial_state = State::default();
-    for timer in file.trim().split(',').map(str::parse::<usize>) {
-        initial_state[timer?] += 1;
-    }
+    // `state[i]` is the number of lanternfish with an internal timer of `i`.
+    input.iter().for_each(|timer| initial_state[*timer] += 1);
 
     let step_once = |prev: &State| -> Option<State> {
         let mut next = State::default();

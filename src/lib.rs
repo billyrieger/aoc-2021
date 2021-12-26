@@ -6,10 +6,12 @@ pub mod prelude {
     pub type BitSlice = bitvec::slice::BitSlice<bitvec::order::Msb0, u8>;
     pub type HashMap<K, V> = rustc_hash::FxHashMap<K, V>;
     pub type HashSet<K> = rustc_hash::FxHashSet<K>;
+    pub type IVec2 = na::Vector2<i32>;
 }
 
+use itertools::Itertools;
+
 pub type Result<T> = anyhow::Result<T>;
-pub type Point2D = (i32, i32);
 
 #[derive(Debug, thiserror::Error)]
 pub enum AocError {
@@ -19,7 +21,11 @@ pub enum AocError {
     Logic,
 }
 
-pub fn parse_point(point: &str) -> Result<Point2D> {
-    let (x, y) = point.split_once(',').ok_or(AocError::Parse)?;
-    Ok((x.parse()?, y.parse()?))
+pub fn parse_point2(input: &str) -> Result<prelude::IVec2> {
+    let (x, y) = input
+        .split(',')
+        .map(str::parse::<i32>)
+        .collect_tuple()
+        .ok_or(AocError::Parse)?;
+    Ok([x?, y?].into())
 }
