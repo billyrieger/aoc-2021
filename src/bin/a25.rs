@@ -1,1 +1,5 @@
-fn main() {}
+use aoc::*;
+
+fn main() -> Result<()> {
+    Ok(())
+}
